@@ -1,6 +1,6 @@
 test_that ("flow:", {
 
-peckerwood <- read.csv('~/Dropbox/R/packages/wheelR/tests/peckerwood_1.235cfs.csv', stringsAsFactors=FALSE, na = '.')
+peckerwood <- read.csv('~/git/wheelR/tests/peckerwood_1.235cfs.csv', stringsAsFactors=FALSE, na = '.')
 
 out <- flow(peckerwood$station_ft, peckerwood$depth_ft, peckerwood$vel_ft_per_sec, peckerwood$stream, peckerwood$site, peckerwood$date)
 

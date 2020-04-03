@@ -6,11 +6,13 @@
 #' @param SE_Z Vector of length = 1 of Standard Error of the instantaneous mortality rate. Defaults to NA.
 #' @param CI Vector of length = 1 for the width of the confidence interval. Defaults to 0.95.
 #'
-#' @return A list with with the estimates for A and Z, their standard errors, and their 95% confidence intervals.
+#' @return A list with with the estimates for A and Z, their standard errors, and their confidence intervals.  The confidence interval is derrived from a parameteric bootstrap from the theoretical distribution (a.k.a, Monte Carlo; Bolker 2008).
 #'
 #' @author A. Powell Wheeler, \email{powell.wheeler@@gmail.com}
 #'
-#' @author Kyle Rachales
+#' @author Kyle Rachles added the solution for confidence intervals.
+#'
+#' @references Bolker, B. M. 2008. Ecological Models and Data in R. Princeton University Press, New Jersey.
 #'
 #' @section testing:  Tested against the commonly known relationship that a Z of 0.693 equals 50% A.  For example page 204 in Ogle, D.H. 2016. Introductory Fisheries Analyses with R. Chapman & Hall/CRC, Boca Raton, FL.
 #'

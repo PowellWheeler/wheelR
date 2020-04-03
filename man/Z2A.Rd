@@ -14,7 +14,7 @@ Z2A(Z, SE_Z = NA, CI = 0.95)
 \item{CI}{Vector of length = 1 for the width of the confidence interval. Defaults to 0.95.}
 }
 \value{
-A list with with the estimates for A and Z, their standard errors, and their 95% confidence intervals.
+A list with with the estimates for A and Z, their standard errors, and their confidence intervals.  The confidence interval is derrived from a parameteric bootstrap from the theoretical distribution (a.k.a, Monte Carlo; Bolker 2008).
 }
 \description{
 Quickly convert a difficult to interprete instantaneous mortality to a more understandable annual mortality rate. Also, converts the SE(Z) to SE(A) and bootstraps confidence intervals with the gamma distribution.
@@ -32,8 +32,11 @@ Z2A(0.69, 0.1)
 Z2A(0.69, 0.1, 0.99)
 
 }
+\references{
+Bolker, B. M. 2008. Ecological Models and Data in R. Princeton University Press, New Jersey.
+}
 \author{
 A. Powell Wheeler, \email{powell.wheeler@gmail.com}
 
-Kyle Rachales
+Kyle Rachles added the solution for confidence intervals.
 }
