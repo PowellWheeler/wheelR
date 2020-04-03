@@ -1,0 +1,20 @@
+Package: wheelR
+Version: 1.0.0.0
+Date: 2020-4-2
+Title: Powell Wheeler's Miscellaneous Tools
+Description: A variety tools for fisheries science and other purposes.
+Authors@R:
+    person(given = "Powell",
+           family = "Wheeler",
+           role = c("aut", "cre"),
+           email = "powell.wheeler@gmail.com",
+           comment = c(ORCID = "0000-0002-5699-4273"))
+License: GPL (>= 2)
+LazyData: true
+Depends:
+    R (>= 3.5.0)
+Suggests:
+    ggmap (>= 3.0.0),
+    testthat
+Encoding: UTF-8
+RoxygenNote: 7.1.0

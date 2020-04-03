@@ -1,0 +1,10 @@
+## Project files
+^.*\.Rproj$
+^\.Rproj\.user$
+
+## Raw data files
+^data-raw$
+
+## Miscellaneous webpage and package files
+README.md
+LICENSE
