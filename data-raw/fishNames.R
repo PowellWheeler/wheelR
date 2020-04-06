@@ -1,11 +1,11 @@
-nc.fishes <- read.csv('~/Dropbox/NCWRC/fish.names.and.codes/official.NCWRC.fish.codes.csv', na='.', header=T)
-save(nc.fishes,file='~/Dropbox/R/packages/wheelR/data/ncFishes.rda')
+ncFishes <- read.csv('~/Dropbox/NCWRC/fish.names.and.codes/official.NCWRC.fish.codes.csv', na='.', header=T)
+save(ncFishes,file='~/git/wheelR/data/ncFishes.rda')
 
-d9.sportfish <- nc.fishes[nc.fishes$d9.status == 'sportfish',]
-d9.sportfish <- d9.sportfish[!(is.na(d9.sportfish$d9.status)),]
-rownames(d9.sportfish) <- NULL
-save(d9.sportfish,file='~/Dropbox/R/packages/wheelR/data/d9Sportfish.rda')
+d9Sportfish <- ncFishes[ncFishes$d9.status == 'sportfish',]
+d9Sportfish <- d9Sportfish[!(is.na(d9Sportfish$d9.status)),]
+rownames(d9Sportfish) <- NULL
+save(d9Sportfish, file='~/git/wheelR/data/d9Sportfish.rda')
 
-d9.sportfish.vector <-as.vector(d9.sportfish$code)
-names(d9.sportfish.vector) <- d9.sportfish$common.name
-save(d9.sportfish.vector,file='~/Dropbox/R/packages/wheelR/data/d9SportfishVector.rda')
+d9Sportfish.vector <-as.vector(d9Sportfish$code)
+names(d9Sportfish.vector) <- d9Sportfish$common.name
+save(d9Sportfish.vector,file='~/git/wheelR/data/d9SportfishVector.rda')

@@ -26,4 +26,4 @@ rownames(city.and.town.coords) <- NULL
 
 towns <- city.and.town.coords
 
-save(towns,file='~/Dropbox/R/packages/wheelR/data/towns.rda')
+save(towns,file='~/git/wheelR/data/towns.rda')

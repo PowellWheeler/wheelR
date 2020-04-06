@@ -1,8 +1,7 @@
 # This creates data sets and saves them as sysdata.rda in the /R
 # sysdata.rda holds data that is needed by functions, but not otherwise needed by users.
-# If this data were modified, it would break your function and the users should not modify it.
-# They don't show-up on a data() call.
-
+# For example, if a user modified this data, it would functions in the package.
+# They don't show-up on a data() call but they are available with wheelR:::wsLookup.
 #ordinalLookup is a data.frame of calendar dates and their ordinal equivalent.
 #wheelR:ordinalDate() uses this data.
 ordinalLookup <- data.frame(monthDay = format(seq(as.Date("2001-01-01"), as.Date("2001-12-31"),1),format = "%m-%d"), ordinalDay=1:365, stringsAsFactors=FALSE)
@@ -44,4 +43,4 @@ wsLookup <- list(
 sumFunLabels <- c("N_Obs","N_Zero","N_NA","Sum","Mean","SD","SE","L95CI","U95CI","Median","Var","CV","Min","Max")
 sumFunShortLabels <- c("N_Obs","N_NA","Mean","SD","SE")
 
-save(sumFunLabels, sumFunShortLabels, wsLookup, ordinalLookup, file='~/Dropbox/R/packages/wheelR/R/sysdata.rda')
+save(sumFunLabels, sumFunShortLabels, wsLookup, ordinalLookup, file='~/git/wheelR/R/sysdata.rda')
