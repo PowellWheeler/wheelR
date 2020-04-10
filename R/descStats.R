@@ -2,7 +2,7 @@
 #'
 #' @description Count the observations while ignoring missing values.
 #'
-#' @param x A numeric vector.
+#' @param x A vector, data.frame, matrix, list, or whatever data storage object.
 #'
 #' @return A numeric vector containing a single value of the count of
 #'   observations ignoring the missing values.
@@ -27,7 +27,7 @@ N_Obs <- function(x) length(x[!is.na(x)])
 #'
 #' @description Count zero observations while ignoring missing values.
 #'
-#' @param x A numeric vector.
+#' @param x A numeric vector or logical vector.
 #'
 #' @return A numeric vector containing a single value of the count of
 #'   observations of zero.
@@ -45,14 +45,20 @@ N_Obs <- function(x) length(x[!is.na(x)])
 #' @rdname N_Zero
 #'
 #' @export
-N_Zero <- function(x) length(x[(! is.na(x) & x == 0)])
+N_Zero <- function(x){
+  if(is.numeric(x) | is.logical(x)){
+    return(length(x[(! is.na(x) & x == 0)]))
+  }else{
+    return(NA)
+  }
+}
 
 #'
 #' @title Count of missing (NA and NaN) values
 #'
 #' @description Count the missing values (NA and NaN).
 #'
-#' @param x A numeric vector.
+#' @param x A vector, data.frame, matrix or whatever.
 #'
 #' @return A numeric vector containing a single value of the count of
 #'   observations that are NA or NaN.
@@ -77,7 +83,7 @@ N_NA <- function(x) length(x[is.na(x)])
 #'
 #' @description Sum of values while ignoring missing values.
 #'
-#' @param x A numeric vector.
+#' @param x A numeric or logical vector.
 #'
 #' @return A numeric vector containing a single value of the sum of
 #'   observations while ignoring missing values.
@@ -95,14 +101,20 @@ N_NA <- function(x) length(x[is.na(x)])
 #' @rdname Sum
 #'
 #' @export
-Sum <- function(x) sum(x, na.rm = TRUE)
+Sum <- function(x){
+  if(is.numeric(x) | is.logical(x)){
+    return(sum(x, na.rm = TRUE))
+  }else{
+    return(NA)
+  }
+}
 
 #'
 #' @title Mean of values while ignoring missing values
 #'
 #' @description Mean of values while ignoring missing values.
 #'
-#' @param x A numeric vector.
+#' @param x A numeric or logical vector or matrix.
 #'
 #' @return A numeric vector containing a single value of the mean of
 #'   observations while ignoring missing values.
@@ -120,7 +132,13 @@ Sum <- function(x) sum(x, na.rm = TRUE)
 #' @rdname Mean
 #'
 #' @export
-Mean <- function(x) mean(x, na.rm = TRUE)
+Mean <- function(x){
+  if(is.numeric(x) | is.logical(x)){
+    return(mean(x, na.rm = TRUE))
+  }else{
+    return(NA)
+  }
+}
 
 #'
 #' @title Median of values while ignoring missing values
@@ -145,7 +163,13 @@ Mean <- function(x) mean(x, na.rm = TRUE)
 #' @rdname Median
 #'
 #' @export
-Median <- function(x) median(x, na.rm = TRUE)
+Median <- function(x){
+  if(is.numeric(x)){
+    return(median(x, na.rm = TRUE))
+  }else{
+    return(NA)
+  }
+}
 
 #'
 #' @title Minimum of values while ignoring missing values
@@ -170,7 +194,13 @@ Median <- function(x) median(x, na.rm = TRUE)
 #' @rdname Min
 #'
 #' @export
-Min <- function(x) min(x, na.rm = TRUE)
+Min <- function(x){
+  if(is.numeric(x)){
+    return(min(x, na.rm = TRUE))
+  }else{
+    return(NA)
+  }
+}
 
 #'
 #' @title Maximum of values while ignoring missing values
@@ -195,7 +225,13 @@ Min <- function(x) min(x, na.rm = TRUE)
 #' @rdname Max
 #'
 #' @export
-Max <- function(x) max(x, na.rm = TRUE)
+Max <- function(x){
+  if(is.numeric(x)){
+    return(max(x, na.rm = TRUE))
+  }else{
+    return(NA)
+  }
+}
 
 #'
 #' @title Variance of values while ignoring missing values
@@ -220,7 +256,13 @@ Max <- function(x) max(x, na.rm = TRUE)
 #' @rdname Var
 #'
 #' @export
-Var <- function(x) var(x, na.rm = TRUE)
+Var <- function(x){
+  if(is.numeric(x)){
+    return(var(x, na.rm = TRUE))
+  }else{
+    return(NA)
+  }
+}
 
 #'
 #' @title Standard deviation of values while ignoring missing values
@@ -245,7 +287,13 @@ Var <- function(x) var(x, na.rm = TRUE)
 #' @rdname SD
 #'
 #' @export
-SD <- function(x) sd(x, na.rm = TRUE)
+SD <- function(x){
+  if(is.numeric(x)){
+    return(sd(x, na.rm = TRUE))
+  }else{
+    return(NA)
+  }
+}
 
 #'
 #' @title Coefficient of variation of values while ignoring missing values
@@ -271,7 +319,13 @@ SD <- function(x) sd(x, na.rm = TRUE)
 #' @rdname CV
 #'
 #' @export
-CV <- function(x) sd(x, na.rm = TRUE) / mean(x, na.rm = TRUE) * 100
+CV <- function(x){
+  if(is.numeric(x)){
+    return(sd(x, na.rm = TRUE) / mean(x, na.rm = TRUE) * 100)
+  }else{
+    return(NA)
+  }
+}
 
 #'
 #' @title Standard error of values while ignoring missing values
@@ -296,7 +350,13 @@ CV <- function(x) sd(x, na.rm = TRUE) / mean(x, na.rm = TRUE) * 100
 #' @rdname SE
 #'
 #' @export
-SE <- function(x) sd(x, na.rm = TRUE) / sqrt(length(x[!is.na(x)]))
+SE <- function(x){
+  if(is.numeric(x)){
+    return(sd(x, na.rm = TRUE) / sqrt(length(x[!is.na(x)])))
+  }else{
+    return(NA)
+  }
+}
 
 #'
 #' @title Lower 95\% confidence interval while ignoring missing values
@@ -319,9 +379,15 @@ SE <- function(x) sd(x, na.rm = TRUE) / sqrt(length(x[!is.na(x)]))
 #' @rdname L95CI
 #'
 #' @export
-L95CI <- function(x) mean(x, na.rm = TRUE) - qt(0.975,
-  df = (length(x[!is.na(x)]) - 1)) * (sd(x, na.rm = TRUE) /
-  sqrt(length(x[!is.na(x)])))
+  L95CI <- function(x){
+    if(is.numeric(x)){
+      return(mean(x, na.rm = TRUE) - qt(0.975,
+        df = (length(x[!is.na(x)]) - 1)) * (sd(x, na.rm = TRUE) /
+        sqrt(length(x[!is.na(x)]))))
+    }else{
+      return(NA)
+    }
+  }
 
 #'
 #' @title Upper 95\% confidence interval of values while ignoring missing values
@@ -344,9 +410,15 @@ L95CI <- function(x) mean(x, na.rm = TRUE) - qt(0.975,
 #' @rdname U95CI
 #'
 #' @export
-U95CI <- function(x) mean(x, na.rm = TRUE) + qt(0.975,
-  df = (length(x[!is.na(x)]) - 1)) * (sd(x, na.rm = TRUE) /
-  sqrt(length(x[!is.na(x)])))
+U95CI <- function(x){
+    if(is.numeric(x)){
+      return(mean(x, na.rm = TRUE) + qt(0.975,
+        df = (length(x[!is.na(x)]) - 1)) * (sd(x, na.rm = TRUE) /
+        sqrt(length(x[!is.na(x)]))))
+    }else{
+      return(NA)
+    }
+  }
 
 #'
 #' @title 95\% confidence interval
@@ -369,9 +441,15 @@ U95CI <- function(x) mean(x, na.rm = TRUE) + qt(0.975,
 #' @rdname CI95
 #'
 #' @export
-CI95 <- function(x) mean(x, na.rm = TRUE) + c(-1, 1) *
-  qt(0.975, df = (length(x[!is.na(x)]) - 1)) * (sd(x, na.rm = TRUE)
-  / sqrt(length(x[!is.na(x)])))
+CI95 <- function(x){
+    if(is.numeric(x)){
+      return(mean(x, na.rm = TRUE) + c(-1, 1) *
+        qt(0.975, df = (length(x[!is.na(x)]) - 1)) * (sd(x, na.rm = TRUE)
+        / sqrt(length(x[!is.na(x)]))))
+    }else{
+      return(NA)
+    }
+  }
 
 #'
 #' @title Collection of descriptive statistics that ignoring missing values
@@ -395,17 +473,22 @@ CI95 <- function(x) mean(x, na.rm = TRUE) + c(-1, 1) *
 #' @rdname sumFun
 #'
 #' @export
-sumFun <- function(x) {
-  vector <- c(N_Obs(x), N_Zero(x), N_NA(x), Sum(x), Mean(x), SD(x),
-  SE(x), L95CI(x), U95CI(x), Median(x), Var(x), CV(x), Min(x), Max(x))
+sumFun <- function(x){
+      if(is.numeric(x)){
+        vector <- c(N_Obs(x), N_Zero(x), N_NA(x), Sum(x), Mean(x), SD(x),
+        SE(x), L95CI(x), U95CI(x), Median(x), Var(x), CV(x), Min(x), Max(x))
 
-  vector.names <- c('N_Obs', 'N_Zero', 'N_NA', 'Sum', 'Mean', 'SD', 'SE', 'L95CI',
-    'U95CI', 'Median', 'Var', 'CV', 'Min', 'Max')
+        vector.names <- c('N_Obs', 'N_Zero', 'N_NA', 'Sum', 'Mean', 'SD', 'SE', 'L95CI',
+          'U95CI', 'Median', 'Var', 'CV', 'Min', 'Max')
 
-  names(vector) <- vector.names
+        names(vector) <- vector.names
 
-  return(vector)
-  }
+        return(vector)
+
+      }else{
+        return(NA)
+      }
+    }
 
 #'
 #' @title Collection of descriptive statistics that ignoring missing values
@@ -429,12 +512,17 @@ sumFun <- function(x) {
 #' @rdname sumFunShort
 #'
 #' @export
-sumFunShort <- function(x) {
-  vector <- c(N_Obs(x), N_NA(x), Mean(x), SD(x), SE(x))
+sumFunShort <- function(x){
+        if(is.numeric(x)){
+          vector <- c(N_Obs(x), N_NA(x), Mean(x), SD(x), SE(x))
 
-  vector.names <- c('N_Obs', 'N_NA', 'Mean', 'SD', 'SE')
+          vector.names <- c('N_Obs', 'N_NA', 'Mean', 'SD', 'SE')
 
-  names(vector) <- vector.names
+          names(vector) <- vector.names
 
-  return(vector)
-  }
+          return(vector)
+
+        }else{
+          return(NA)
+        }
+      }

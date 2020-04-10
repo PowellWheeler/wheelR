@@ -4,7 +4,7 @@
 \alias{findCoords}
 \title{Find GPS coordinates of anything}
 \usage{
-findCoords(place = "135 Caring Place Loop, Clyde, NC 28721")
+findCoords(place = NA)
 }
 \arguments{
 \item{x}{A string describing the location of interest.}

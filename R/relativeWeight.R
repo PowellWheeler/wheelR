@@ -22,24 +22,26 @@
 #' df$wr <- mapply(wr, df$species, df$tl.mm, df$wt.g)
 #'
 #' @export
-
 wr <- function(species, tl_mm, wt_g) {
+species <- as.character(species) #make sure species comes in as a character
+if( (is.vector(species) && is.vector(tl_mm) && is.vector(wt_g)) &&  #all the inputs are vectors
+    (length(species) == 1 && length(tl_mm) == 1 && length(wt_g) == 1) && #all the inputs are only one value
+    (is.character(species) && is.numeric(tl_mm) && is.numeric(wt_g)) && #all the inputs are the correct data class
+    (sum(is.na(c(species, tl_mm, wt_g))) == 0) && #there are no missing values
+    (!is.null(wheelR:::wsLookup[[species]]))){ #make sure the species is in the lookup list
 
-species <- as.character(species)
+    a = wheelR:::wsLookup[[species]][['a']]
+    b = wheelR:::wsLookup[[species]][['b']]
+    min_tl = wheelR:::wsLookup[[species]][['min_tl']]
 
-if(!is.null(wheelR:::wsLookup[[species]]) && (sum(is.na(c(species, tl_mm, wt_g))) == 0)){
-  a = wheelR:::wsLookup[[species]][['a']]
-  b = wheelR:::wsLookup[[species]][['b']]
-  min_tl = wheelR:::wsLookup[[species]][['min_tl']]
-
-    if (tl_mm >= min_tl){
-	ws = 10^(a + (b * (log10(tl_mm))))
-	wr = (wt_g / ws) * 100
-	return(wr)
-    } else {
-        return(NA)
-    }
-} else {
-    return(NA)
-}
-}
+      if (tl_mm >= min_tl){
+  	     ws = 10^(a + (b * (log10(tl_mm))))
+  	     wr = (wt_g / ws) * 100
+  	     return(wr)
+      }else{
+          return(NA)
+      }
+  }else{
+      return(NA)
+  }
+  }

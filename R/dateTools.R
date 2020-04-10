@@ -22,7 +22,19 @@
 #' @rdname daysFromToday
 #'
 #' @export
-ordinalDate <- function(X) wheelR:::ordinalLookup[which(wheelR:::ordinalLookup$monthDay == format(X, format="%m-%d")),2]
+
+ordinalDate <- function(date){
+  if(class(date) == "Date" && is.atomic(date) && length(date) == 1){
+     #Turns out there is no good way to quickly check if a vector of dates is actually a vector.  is.vector is weird and not exactly what you expect.
+     #I don't think this is perfect, but is.atomic might work here.  It should at least kick out a data.frame.
+     #https://stackoverflow.com/questions/18833828/what-does-r-think-of-vector-of-dates and
+     #https://stackoverflow.com/questions/6434663/looping-over-a-datetime-object-results-in-a-numeric-iterator/7143086#7143086
+    out <- wheelR:::ordinalLookup[which(wheelR:::ordinalLookup$monthDay == format(date, format="%m-%d")),2]
+    return(out)
+  }else{
+    return(NA)
+  }
+}
 
 #' @title Find what day is X days from today
 #'
@@ -45,7 +57,14 @@ ordinalDate <- function(X) wheelR:::ordinalLookup[which(wheelR:::ordinalLookup$m
 #' @rdname daysFromToday
 #'
 #' @export
-daysFromToday <- function(x = 0) Sys.Date() + x
+daysFromToday <- function(x = 0){
+  if(is.numeric(x) && is.vector(x)){
+  out <- Sys.Date() + x
+  return(out)
+}else{
+  return(NA)
+}
+}
 
 #' @title Find what day is today.
 #'
@@ -62,7 +81,7 @@ daysFromToday <- function(x = 0) Sys.Date() + x
 #' @rdname today
 #'
 #' @export
-today <- function() Sys.Date()
+today <- function(...) Sys.Date()
 
 #' @title Converts dates stored as strings with two-digit years into dates stored as strings with four digit years.
 #'
@@ -76,7 +95,7 @@ today <- function() Sys.Date()
 #'
 #' @family date tools
 #'
-#' @note After calling yy2yyyy, your neXt step will likely be to convert the output to an R-format date with as.Date().
+#' @note After calling yy2yyyy, your next step will likely be to convert the output to an R-format date with as.Date().
 #'    yy2yyyy will convert '01/01/19' to '01/01/2019' but '1/1/19' to '1/1/2019'. Although there are two results for the same data, as.Date (X, format = '%m/%d/%Y'), will work on both.
 #'    This function is not vectorized.  Use sapply() to call it on a vector or a data.frame column with length > 1. See eXamples.
 #'
@@ -94,25 +113,27 @@ today <- function() Sys.Date()
 #'
 #' @export
 
-yy2yyyy <- function(X) {
-current_2digit_year <- as.numeric(format(Sys.Date(), '%y'))
+yy2yyyy <- function(X){
+if(is.character(X) && is.vector(X) && length(X) == 1 && !is.na(X)){
+    current_2digit_year <- as.numeric(format(Sys.Date(), '%y'))
 
-if (is.na(X)){
-  output <- NA
+    if(suppressWarnings(is.na(as.numeric(substring(X, nchar(X) - 3, nchar(X)))))) { #tests if the last four digits can't be eXpressed as a number, it will kick out warnings that have to be suppressed
+      year_2digit <- substring(X, nchar(X) - 1, nchar(X))
+      month.day <- substring(X, 1, nchar(X) - 3)
+
+        if(year_2digit <= current_2digit_year){
+          prefix <- current_2digit_year
+          }else{
+          prefix <- current_2digit_year - 1
+          }
+
+      year_4digit <- paste0(prefix, year_2digit)
+      output <-paste0(month.day, '/', year_4digit)
+    }else{
+      output <- X
+    }
+  return(output)
 }else{
-  if  (suppressWarnings(is.na(as.numeric(substring(X, nchar(X) - 3, nchar(X)))))) { #tests if the last four digits can't be eXpressed as a number, it will kick out warnings that have to be suppressed
-    year_2digit <- substring(X, nchar(X) - 1, nchar(X))
-    month.day <- substring(X, 1, nchar(X) - 3)
-      if(year_2digit <= current_2digit_year){
-        prefix <- current_2digit_year
-        }else{
-        prefix <- current_2digit_year - 1
-        }
-    year_4digit <- paste0(prefix, year_2digit)
-    output <-paste0(month.day, '/', year_4digit)
-  }else{
-    output <- X
-}
-return(output)
+  return(NA)
 }
 }

@@ -9,7 +9,7 @@
 Mean(x)
 }
 \arguments{
-\item{x}{A numeric vector.}
+\item{x}{A numeric or logical vector or matrix.}
 }
 \value{
 A numeric vector containing a single value of the mean of

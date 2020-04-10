@@ -7,12 +7,12 @@
 \usage{
 dfScan(df, N = 50)
 
-basicSysInfo()
+basicSysInfo(...)
 }
 \arguments{
 \item{df}{Data.frame.}
 
-\item{N}{Number. The number of rows you want to display.}
+\item{N}{Number. The number of rows you want to display. Must be >= 3.}
 }
 \value{
 A data.frame of the sytematically subsampled rows.

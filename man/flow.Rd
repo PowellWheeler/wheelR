@@ -5,9 +5,9 @@
 \title{Stream flow.}
 \usage{
 flow(
-  station_ft,
-  depth_ft,
-  vel_ft_per_sec,
+  station_ft = NA,
+  depth_ft = NA,
+  vel_ft_per_sec = NA,
   stream = "None",
   site = "None",
   date = "None"

@@ -2,7 +2,7 @@
 % Please edit documentation in R/westWing.R
 \name{westWing}
 \alias{westWing}
-\title{Pick random episodes of the West Wing tv show.}
+\title{Pick random episodes of the West Wing tv show}
 \usage{
 westWing(N = 1)
 }

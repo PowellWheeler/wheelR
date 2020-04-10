@@ -28,42 +28,61 @@
 #' flow(peckerwood$station_ft, peckerwood$depth_ft, peckerwood$vel_ft_per_sec, peckerwood$stream, peckerwood$site, peckerwood$date)
 #'
 #' @export
-flow <- function(station_ft, depth_ft, vel_ft_per_sec, stream='None', site='None', date='None'){
+flow <- function(station_ft = NA, depth_ft = NA, vel_ft_per_sec = NA, stream='None', site='None', date='None'){
 
-df <- data.frame(stream = stream, site = site, date = date, station_ft = station_ft, depth_ft = depth_ft, vel_ft_per_sec = vel_ft_per_sec)
-#warning("If velocity measurement are wrong, its likely a factor because you forgot na='.' in the read_csv")
+  #make sure these are characters, they could be numbers, and only use the first observation
+  #this is before the dummy-proofing, that it shouldn't break the function because anything can convert to a character
+  #NA's will even pass through this
+  stream <- as.character(stream[1])
+  site <- as.character(site[1])
+  date <- as.character(date[1])
 
-df$vel_ft_per_sec[is.na(df$vel_ft_per_sec)] <- 0 #replace any missing velocity measurements with Zero - NAs might be recorded for LEW and REW.
+  #NAs might be recorded for LEW and REW, make sure it's zero for this function to work right.
+  # I check for length > 1 because if vel_ft_per_sec is missing, then it will default to a vector with one observation NA
+  if(length(vel_ft_per_sec) > 1){
+    vel_ft_per_sec[1] <- 0
+    vel_ft_per_sec[length(vel_ft_per_sec)] <- 0
+  }
 
-first_row <- 1
-last_row <- dim(df)[1]
-min_station <- min(df[,'station_ft'])
-max_station <- max(df[,'station_ft'])
+      if( (is.vector(station_ft) && is.vector(depth_ft) && is.vector(vel_ft_per_sec) && is.vector(stream) && is.vector(site) && is.vector(date))  && #all the inputs are the correct object: vectors
+        (is.numeric(station_ft) && is.numeric(depth_ft) && is.numeric(vel_ft_per_sec)) && #these the inputs are the correct data class: numeric
+        (sum(is.na(c(station_ft, depth_ft, vel_ft_per_sec))) == 0) # I should have no mising values in anyof these vectors.  NOTE: this line tests each element of each vector
+        ){
 
-intervals <- data.frame('cell' = 1:last_row,'start_ft' = NA, 'station_ft' = NA, 'end_ft' = NA, 'depth_ft' = NA, 'vel_ft_per_sec' = NA) #initalize a df for interval analysis
+    df <- data.frame(station_ft = station_ft, depth_ft = depth_ft, vel_ft_per_sec = vel_ft_per_sec, stringsAsFactors = FALSE)
 
-for (row in first_row:last_row){
-  intervals$start_ft[row]         <- ifelse(row != first_row, df[row - 1, 'station_ft'], df[row, 'station_ft']) #row=1 is special because it starts on itself
-  intervals$end_ft[row]           <- ifelse(row != last_row, df[row + 1, 'station_ft'], df[row, 'station_ft']) #the last row is special because it ends on itself
-  intervals$station_ft[row]       <- df[row, 'station_ft']
-  intervals$depth_ft[row]         <- df[row, 'depth_ft']
-  intervals$vel_ft_per_sec[row]   <- df[row, 'vel_ft_per_sec']
-}
+    first_row <- 1
+    last_row <- dim(df)[1]
+    min_station <- min(df[,'station_ft'])
+    max_station <- max(df[,'station_ft'])
 
-intervals$width_ft                  <- (intervals$end_ft - intervals$start_ft) / 2 #this is the key to this method.  The intervals are overwide because they span 3 stations, but then you divide by 2.
-intervals$area_sqft                 <- intervals$width_ft * intervals$depth_ft
-intervals$discharge_cfs             <- intervals$area_sqft * intervals$vel_ft_per_sec
-total_discharge_cfs                 <- sum(intervals$discharge_cfs)
-intervals$discharge_pct             <- intervals$discharge_cfs / total_discharge_cfs
-transect_width_ft                   <- max_station - min_station
-transect_mean_depth_ft              <- mean(rep(intervals$depth_ft, trunc(intervals$width_ft * 100))) # this is an average of depth that is weighted by the cell width
-transect_xsection_area_sqft         <- transect_mean_depth_ft * transect_width_ft
-transect_mean_velocity_ft_per_sec   <- mean(rep(intervals$vel_ft_per_sec, trunc(intervals$width_ft * 100))) # this is an average of velocity that is weighted by the cell width
-discharge_measurements              <- c('cfs' = total_discharge_cfs,'cms' = total_discharge_cfs * 0.0283168,'gps' = total_discharge_cfs * 7.4805)
+    intervals <- data.frame('cell' = 1:last_row,'start_ft' = NA, 'station_ft' = NA, 'end_ft' = NA, 'depth_ft' = NA, 'vel_ft_per_sec' = NA) #initalize a df for interval analysis
 
-output <- list('Stream Name' = as.character(df$stream[1]),'Site' = as.character(df$site[1]),'Date' = as.character(df$date[1]),'Transect Width (ft)' = transect_width_ft,
-   'Transect Weighted Mean Depth (ft)' = transect_mean_depth_ft, 'Transect Cross Sectional Area (sq_ft)' = transect_xsection_area_sqft,
-   'Transect Weighted Mean Velocity (ft/s)' = transect_mean_velocity_ft_per_sec,
-   'Interval Calculations' = intervals, 'Discharge' = discharge_measurements)
-return(output)
+    for (row in first_row:last_row){
+      intervals$start_ft[row]         <- ifelse(row != first_row, df[row - 1, 'station_ft'], df[row, 'station_ft']) #row=1 is special because it starts on itself
+      intervals$end_ft[row]           <- ifelse(row != last_row, df[row + 1, 'station_ft'], df[row, 'station_ft']) #the last row is special because it ends on itself
+      intervals$station_ft[row]       <- df[row, 'station_ft']
+      intervals$depth_ft[row]         <- df[row, 'depth_ft']
+      intervals$vel_ft_per_sec[row]   <- df[row, 'vel_ft_per_sec']
+    }
+
+    intervals$width_ft                  <- (intervals$end_ft - intervals$start_ft) / 2 #this is the key to this method.  The intervals are overwide because they span 3 stations, but then you divide by 2.
+    intervals$area_sqft                 <- intervals$width_ft * intervals$depth_ft
+    intervals$discharge_cfs             <- intervals$area_sqft * intervals$vel_ft_per_sec
+    total_discharge_cfs                 <- sum(intervals$discharge_cfs)
+    intervals$discharge_pct             <- intervals$discharge_cfs / total_discharge_cfs
+    transect_width_ft                   <- max_station - min_station
+    transect_mean_depth_ft              <- mean(rep(intervals$depth_ft, trunc(intervals$width_ft * 100))) # this is an average of depth that is weighted by the cell width
+    transect_xsection_area_sqft         <- transect_mean_depth_ft * transect_width_ft
+    transect_mean_velocity_ft_per_sec   <- mean(rep(intervals$vel_ft_per_sec, trunc(intervals$width_ft * 100))) # this is an average of velocity that is weighted by the cell width
+    discharge_measurements              <- c('cfs' = total_discharge_cfs,'cms' = total_discharge_cfs * 0.0283168,'gps' = total_discharge_cfs * 7.4805)
+
+     output <- list('Stream Name' = stream,'Site' = site,'Date' = date,'Transect Width (ft)' = transect_width_ft,
+       'Transect Weighted Mean Depth (ft)' = transect_mean_depth_ft, 'Transect Cross Sectional Area (sq_ft)' = transect_xsection_area_sqft,
+       'Transect Weighted Mean Velocity (ft/s)' = transect_mean_velocity_ft_per_sec,
+       'Interval Calculations' = intervals, 'Discharge' = discharge_measurements)
+  } else {
+    output <- NA
+     }
+  return(output)
 }

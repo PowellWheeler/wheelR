@@ -8,7 +8,7 @@
 N_Obs(x)
 }
 \arguments{
-\item{x}{A numeric vector.}
+\item{x}{A vector, data.frame, matrix, list, or whatever data storage object.}
 }
 \value{
 A numeric vector containing a single value of the count of

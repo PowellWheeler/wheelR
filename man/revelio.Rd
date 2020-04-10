@@ -4,7 +4,7 @@
 \alias{revelio}
 \title{Reveal what's in your workspace.}
 \usage{
-revelio()
+revelio(...)
 }
 \value{
 Technically returns a NULL vector b/c I can't figure out how to force R to not return an object. However, the intent of the function is just print to the screen.

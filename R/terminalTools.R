@@ -17,9 +17,15 @@
 #' @rdname colIdx
 #'
 #' @export
-colIdx   <- function (df) {vec <- names(df)
+colIdx   <- function (df) {
+  if(is.data.frame(df)){
+   vec <- names(df)
    names(vec) <- 1:length(vec)
-   return (vec)}
+   return(vec)
+ }else{
+   return(NA)
+ }
+}
 
 #'
 #' @title View a subset of the rows in a large data.frame.
@@ -28,7 +34,7 @@ colIdx   <- function (df) {vec <- names(df)
 #'
 #' @param df Data.frame.
 #'
-#' @param N Number. The number of rows you want to display.
+#' @param N Number. The number of rows you want to display. Must be >= 3.
 #'
 #' @return A data.frame of the sytematically subsampled rows.
 #'
@@ -47,8 +53,13 @@ colIdx   <- function (df) {vec <- names(df)
 #' @rdname dfScan
 #'
 #' @export
-dfScan   <- function (df, N = 50) ifelse(nrow(df) <= N, return(df), return(df[c(1, 1:(N - 2) * (nrow(df)/(N - 1)),nrow(df)), ])) #displays the first, last and evenly spaced rows throughout the df
-
+dfScan   <- function (df, N = 50){
+if(is.data.frame(df) && N >= 3){
+  ifelse(nrow(df) <= N, return(df), return(df[c(1, 1:(N - 2) * (nrow(df)/(N - 1)),nrow(df)), ])) #displays the first, last and evenly spaced rows throughout the df
+}else{
+  return(NA)
+ }
+}
 #' @title Basic computing system information.
 #'
 #' @description Displays basic information on R, hardware, operating system, and date.
@@ -68,14 +79,14 @@ dfScan   <- function (df, N = 50) ifelse(nrow(df) <= N, return(df), return(df[c(
 #' @rdname dfScan
 #'
 #' @export
-
-basicSysInfo <- function() {
+basicSysInfo <- function(...) {
 
   infoOut <- sessionInfo()
   infoAboutR  <- paste(infoOut$R.version$version.string, infoOut$R.version$nickname, sep="     ")
   infoAboutPlatform <- infoOut$platform
   infoAboutOs  <- infoOut$running
 
+  cat("\n")
   cat(paste("**********************************************\n"))
   cat(paste(infoAboutR ,"\n\n"))
   cat(paste(infoAboutPlatform ,"\n\n"))

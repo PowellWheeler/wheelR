@@ -18,7 +18,13 @@
 #' @rdname mm2in
 #'
 #' @export
-mm2in <- function(x) x *  0.03937007874
+mm2in <- function(x){
+  if(is.numeric(x)){
+    return(x * 0.03937007874)
+  }else{
+    return(NA)
+  }
+}
 
 #' @title Convert inches to millimeters
 #'
@@ -40,7 +46,13 @@ mm2in <- function(x) x *  0.03937007874
 #' @rdname in2mm
 #'
 #' @export
-in2mm <- function(x) x * 25.4
+in2mm <- function(x){
+  if(is.numeric(x)){
+    return(x * 25.4)
+  }else{
+    return(NA)
+  }
+}
 
 #' @title Convert grams to pounds
 #'
@@ -62,7 +74,14 @@ in2mm <- function(x) x * 25.4
 #' @rdname g2lb
 #'
 #' @export
-g2lb <- function (x) x * 0.0022046226218454
+g2lb <- function(x){
+  if(is.numeric(x)){
+    return(x * 0.0022046226218454)
+  }else{
+    return(NA)
+  }
+}
+
 
 #' @title Convert pounds to grams
 #'
@@ -84,7 +103,13 @@ g2lb <- function (x) x * 0.0022046226218454
 #' @rdname lb2g
 #'
 #' @export
-lb2g <- function (x) x * 453.59237
+lb2g <- function(x){
+  if(is.numeric(x)){
+    return(x * 453.59237)
+  }else{
+    return(NA)
+  }
+}
 
 #' @title Convert meters to feet
 #'
@@ -106,7 +131,13 @@ lb2g <- function (x) x * 453.59237
 #' @rdname m2ft
 #'
 #' @export
-m2ft <- function (x) x * 3.280839895
+m2ft <- function(x){
+  if(is.numeric(x)){
+    return(x * 3.280839895)
+  }else{
+    return(NA)
+  }
+}
 
 #' @title Convert feet to meters
 #'
@@ -128,7 +159,13 @@ m2ft <- function (x) x * 3.280839895
 #' @rdname ft2m
 #'
 #' @export
-ft2m <- function (x) x * 0.3048
+ft2m <- function(x){
+  if(is.numeric(x)){
+    return(x * 0.3048)
+  }else{
+    return(NA)
+  }
+}
 
 #' @title Convert degrees Farenheit to degrees celcius
 #'
@@ -150,7 +187,13 @@ ft2m <- function (x) x * 0.3048
 #' @rdname f2c
 #'
 #' @export
-f2c <- function (x) (x - 32) * (5 / 9)
+f2c  <- function(x){
+  if(is.numeric(x)){
+    return((x - 32) * (5 / 9))
+  }else{
+    return(NA)
+  }
+}
 
 #' @title Convert degrees Celcius to degrees Farenheit
 #'
@@ -172,7 +215,13 @@ f2c <- function (x) (x - 32) * (5 / 9)
 #' @rdname c2f
 #'
 #' @export
-c2f <- function (x) (x / (5 / 9)) + 32
+c2f <- function(x){
+  if(is.numeric(x)){
+    return((x / (5 / 9)) + 32)
+  }else{
+    return(NA)
+  }
+}
 
 #' @title Convert pounds to kilograms
 #'
@@ -194,7 +243,13 @@ c2f <- function (x) (x / (5 / 9)) + 32
 #' @rdname lb2kg
 #'
 #' @export
-lb2kg <-function (x) x * 0.45359237
+lb2kg <- function(x){
+  if(is.numeric(x)){
+    return(x * 0.45359237)
+  }else{
+    return(NA)
+  }
+}
 
 #' @title Convert kilograms to pounds
 #'
@@ -216,7 +271,13 @@ lb2kg <-function (x) x * 0.45359237
 #' @rdname kg2lb
 #'
 #' @export
-kg2lb <-function (x) x * 2.2046226218
+kg2lb <- function(x){
+  if(is.numeric(x)){
+    return(x * 2.2046226218)
+  }else{
+    return(NA)
+  }
+}
 
 #' @title Convert cubic feet to cubic meters
 #'
@@ -238,7 +299,13 @@ kg2lb <-function (x) x * 2.2046226218
 #' @rdname cubft2cubm
 #'
 #' @export
-cubft2cubm <-function (x) x * 0.028316846592
+cubft2cubm <- function(x){
+  if(is.numeric(x)){
+    return(x * 0.028316846592)
+  }else{
+    return(NA)
+  }
+}
 
 #' @title Convert cubic meters to cubic feet
 #'
@@ -260,7 +327,13 @@ cubft2cubm <-function (x) x * 0.028316846592
 #' @rdname cubm2cubft
 #'
 #' @export
-cubm2cubft <-function (x) x * 35.314666721
+cubm2cubft <- function(x){
+  if(is.numeric(x)){
+    return(x * 35.314666721)
+  }else{
+    return(NA)
+  }
+}
 
 #' @title Convert cubic feet to gallons
 #'
@@ -282,7 +355,13 @@ cubm2cubft <-function (x) x * 35.314666721
 #' @rdname cubft2gal
 #'
 #' @export
-cubft2gal <-function (x) x * 7.4805194805
+cubft2gal <- function(x){
+  if(is.numeric(x)){
+    return(x * 7.4805194805)
+  }else{
+    return(NA)
+  }
+}
 
 #' @title Convert gallons to cubic feet
 #'
@@ -304,7 +383,13 @@ cubft2gal <-function (x) x * 7.4805194805
 #' @rdname gal2cubft
 #'
 #' @export
-gal2cubft <-function (x) x * 0.13368055556
+gal2cubft <- function(x){
+  if(is.numeric(x)){
+    return(x * 0.13368055556)
+  }else{
+    return(NA)
+  }
+}
 
 #' @title Convert kilometers to miles
 #'
@@ -326,7 +411,13 @@ gal2cubft <-function (x) x * 0.13368055556
 #' @rdname km2mi
 #'
 #' @export
-km2mi <-function (x) x * 0.62137119224
+km2mi <- function(x){
+  if(is.numeric(x)){
+    return(x * 0.62137119224)
+  }else{
+    return(NA)
+  }
+}
 
 #' @title Convert miles to kilometers
 #'
@@ -348,7 +439,13 @@ km2mi <-function (x) x * 0.62137119224
 #' @rdname mi2km
 #'
 #' @export
-mi2km <-function (x) x * 1.609344
+mi2km <- function(x){
+  if(is.numeric(x)){
+    return(x * 1.609344)
+  }else{
+    return(NA)
+  }
+}
 
 #' @title Convert hectares to acres
 #'
@@ -370,7 +467,13 @@ mi2km <-function (x) x * 1.609344
 #' @rdname ha2ac
 #'
 #' @export
-ha2ac <-function (x) x * 2.4710538147
+ha2ac <- function(x){
+  if(is.numeric(x)){
+    return(x * 2.4710538147)
+  }else{
+    return(NA)
+  }
+}
 
 #' @title Convert acres to hectares
 #'
@@ -392,7 +495,13 @@ ha2ac <-function (x) x * 2.4710538147
 #' @rdname ac2ha
 #'
 #' @export
-ac2ha <-function (x) x * 0.40468564224
+ac2ha <- function(x){
+  if(is.numeric(x)){
+    return(x * 0.40468564224)
+  }else{
+    return(NA)
+  }
+}
 
 #' @title Convert radians to degrees
 #'
@@ -414,7 +523,13 @@ ac2ha <-function (x) x * 0.40468564224
 #' @rdname rad2deg
 #'
 #' @export
-rad2deg <- function(rad) rad * 180 / pi
+rad2deg <- function(rad){
+  if(is.numeric(rad)){
+    return(rad * 180 / pi)
+  }else{
+    return(NA)
+  }
+}
 
 #' @title Convert degrees to radians
 #'
@@ -436,4 +551,10 @@ rad2deg <- function(rad) rad * 180 / pi
 #' @rdname deg2rad
 #'
 #' @export
-deg2rad <- function(deg) deg * pi / 180
+deg2rad <- function(deg){
+  if(is.numeric(deg)){
+    return(deg * pi / 180)
+  }else{
+    return(NA)
+  }
+}

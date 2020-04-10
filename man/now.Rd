@@ -4,7 +4,7 @@
 \alias{now}
 \title{Find the current date and time.}
 \usage{
-now()
+now(...)
 }
 \value{
 The date and time in POSIXct format.

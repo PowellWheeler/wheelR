@@ -5,14 +5,14 @@
 \alias{daysFromToday}
 \title{Assign ordinal dates.}
 \usage{
-ordinalDate(X)
+ordinalDate(date)
 
 daysFromToday(x = 0)
 }
 \arguments{
-\item{X}{A date in R's native format.}
-
 \item{x}{Numeric. The number of days in the future you are interested in.}
+
+\item{X}{A date in R's native format.}
 }
 \value{
 A vector or ordinal dates.

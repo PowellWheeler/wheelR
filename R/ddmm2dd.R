@@ -6,8 +6,7 @@
 #'
 #' @return A numeric vector of a latitude or longitude in the format: dd.dddddd
 #'
-#'
-#' @section testing: I haven't found a good example to test this against.
+#' @section testing: Tested against some values I found on #check known values from http://www.earthpoint.us/Convert.aspx
 #'
 #' @author A. Powell Wheeler, \email{powell.wheeler@@gmail.com}
 #'
@@ -18,10 +17,20 @@
 #'
 #' @export
 
-ddmm2dd <- function(ddmm) {
-	sgn <- sign(ddmm)
+ddmm2dd <- function(ddmm){
+	if((is.vector(ddmm)) && (length(ddmm) == 1) && (is.numeric(ddmm))){
+
+  sgn <- sign(ddmm)
 	mm  <- abs(ddmm) %% 100
-	dd  <- abs(ddmm) - mm
-	decimalDegrees<- (dd + mm / 60) * sgn
+	dd  <- (abs(ddmm) - mm) / 100
+	}else{
+ 		return(NA)
+			}
+
+  if((dd <= 180) && (mm <= 60)){
+	decimalDegrees <- (dd + mm / 60) * sgn
 	return(decimalDegrees)
+  }else{
+	  return(NA)
+		}
 }

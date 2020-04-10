@@ -16,7 +16,7 @@ A numeric vector of a latitude or longitude in the format: dd.dddddd
 Convert historically common degrees and minutes (ddmm.mmm) to more contempoary decimal degrees (dd.ddd).
 }
 \section{testing}{
- I haven't found a good example to test this against.
+ Tested against some values I found on #check known values from http://www.earthpoint.us/Convert.aspx
 }
 
 \examples{

@@ -12,14 +12,20 @@
 #' findCoords ("The White House")
 #'
 #' @export
-findCoords <- function (place = "135 Caring Place Loop, Clyde, NC 28721") {
- if(!requireNamespace("ggmap", quitely = TRUE)) {
-   stop("Package 'ggmap' needed for this function to work. Please install it.",
-    call. = FALSE)
-  }
-#https://cloud.google.com/maps-platform/#get-started
-register_google(key = Sys.getenv("google.api.key"))
-options(digits = 8)
-googleOutput <- as.data.frame(geocode(place))
-return(googleOutput)
+findCoords <- function (place = NA) {
+place <- as.character(place)
+
+if((is.vector(place)) && (length(place) == 1) && (is.character(place))){
+   if(!requireNamespace("ggmap", quitely = TRUE)) {
+     stop("Package 'ggmap' needed for this function to work. Please install it.",
+      call. = FALSE)
+    }
+  #https://cloud.google.com/maps-platform/#get-started
+  register_google(key = Sys.getenv("google.api.key"))
+  options(digits = 8)
+  googleOutput <- as.data.frame(geocode(place))
+  return(googleOutput)
+}else{
+  return(NA)
+    }
 }

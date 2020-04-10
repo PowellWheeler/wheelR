@@ -8,7 +8,7 @@
 N_Zero(x)
 }
 \arguments{
-\item{x}{A numeric vector.}
+\item{x}{A numeric vector or logical vector.}
 }
 \value{
 A numeric vector containing a single value of the count of

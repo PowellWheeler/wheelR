@@ -11,7 +11,7 @@
 #'
 #' @export
 
-revelio <- function(){
+revelio <- function(...){
 
 baseLibraries <- c("base", "datasets", "graphics", "grDevices", "methods", "stats", "utils")
 
@@ -60,11 +60,13 @@ if (length(objectsVector) == 0){
     assign(outputVectorName,tempVec) #make vectors with names like 'data.frame.vector'
  }
 
-outputList <- mget(vectorOfVectorNames) # this is the BOMB - makes a list
+outputList <- mget(vectorOfVectorNames) # this is the BOMB - makes a list from the names of vectors
 
 print(outputList)
 
 cat("\n\n")
 
+NULL
+cat("\r") #erase the line that prints 'NULL'
 }
 }

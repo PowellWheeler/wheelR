@@ -1,4 +1,4 @@
-#' @name Quick Two Sample.
+#' @name Quick Two Sample
 #'
 #' @title Fast and easy two-sample inferrential tests for summarized data.
 #'
@@ -28,71 +28,87 @@
 #' @export
 
 #for checking: https://epitools.ausvet.com.au/twosamplettest
-q2s <- function(est_A, est_B, SE_A, SE_B, N_A = NA, N_B = NA, CI = 0.95){
-pre_digits <- options()$digits
-options(digits = 4)
+q2s <- function(est_A = NA, est_B = NA, SE_A = NA, SE_B = NA, N_A = as.integer(NA), N_B = as.integer(NA), CI = 0.95){
 
-#Initial Calculations
-pooled_SE <- sqrt(SE_A^2 + SE_B^2)
-if(is.na(N_A) & is.na(N_B)) { #if N is unknown use z else use t for conf ints
-    CI_Width <- qnorm(1 - (1 - CI) / 2)
-  }else{
-    CI_Width <- qt((1 - (1 - CI) / 2), N_A + N_B - 2)
-    }
+  if(is.na(N_A) || is.na(N_B)){ #if only one sample size if given that's useless so make both sample sizes NA
+    N_A <- NA
+    N_B <- NA
+  }
 
-#Sample Summaries
-SD_A <- SE_A * sqrt(N_A)
-SD_B <- SE_B * sqrt(N_B)
-VAR_A <- SD_A^2
-VAR_B <- SD_B^2
+  if( (is.vector(est_A) && is.vector(est_B) && is.vector(SE_A) && is.vector(SE_B) && is.vector(N_A) && is.vector(N_B) && is.vector(CI)) &&  #all the inputs are the correct object: vectors
+      (length(est_A) && length(est_B) && length(SE_A) && length(SE_B) && length(N_A) && length(N_B) && length(CI)) && #all the inputs are the correct length: 1
+      (is.numeric(c(est_A, est_B, SE_A, SE_B, N_A, N_B, CI))) && #all the inputs are the correct data class: numeric
+      (if (!is.na(sum(c(N_A, N_B)))){(sum(c(N_A, N_B) == as.integer(c(N_A, N_B))) == 2)}else{TRUE}) && #return TRUE if sample sizes are integers or if sample sizes as NA
+      (sum(is.na(c(est_A, est_B, SE_A, SE_B))) == 0) && #there are no missing values in some inputs
+      (CI > 0 && CI < 1)){#make sure input is within rance: 0 < CI > 1
 
-output_names_samples <-c('value', 'VAR', 'SD', 'SE', 'N', paste0('Low', CI * 100, 'CI'), paste0('Up', CI * 100, 'CI'))
-A_out <- c(est_A, VAR_A, SD_A, SE_A, N_A, est_A - (CI_Width * SE_A), est_A + (CI_Width * SE_A))
-names(A_out) <- output_names_samples
-B_out <- c(est_B, VAR_B, SD_B, SE_B, N_B, est_B - (CI_Width * SE_B), est_B + (CI_Width * SE_B))
-names(B_out) <- output_names_samples
+  pre_digits <- options()$digits
+  options(digits = 4)
 
-## Absolute Effect Sizes
-effect_size     <- est_A - est_B
-sgn_effect_size <- sign(effect_size)
-abs_effect_size <- abs(effect_size)
+  #Initial Calculations
+  pooled_SE <- sqrt(SE_A^2 + SE_B^2)
+  if(is.na(N_A) & is.na(N_B)) { #if N is unknown use z for CIs otherwise use t
+      CI_Width <- qnorm(1 - (1 - CI) / 2)
+    }else{
+      CI_Width <- qt((1 - (1 - CI) / 2), N_A + N_B - 2)
+      }
 
-effect_CI_up  <- effect_size + CI_Width * pooled_SE
-effect_CI_low <- effect_size - CI_Width * pooled_SE
+  #Sample Summaries
+  SD_A <- SE_A * sqrt(N_A)
+  SD_B <- SE_B * sqrt(N_B)
+  VAR_A <- SD_A^2
+  VAR_B <- SD_B^2
 
-output_names_effect <-c('absolute', 'A-B', paste0('Low', CI * 100, 'CI'), paste0('Up', CI * 100, 'CI'))
-effect_out <- c(abs_effect_size, effect_size, effect_CI_low, effect_CI_up)
-names(effect_out) <- output_names_effect
+  output_names_samples <-c('value', 'VAR', 'SD', 'SE', 'N', paste0('Low', CI * 100, 'CI'), paste0('Up', CI * 100, 'CI'))
+  A_out <- c(est_A, VAR_A, SD_A, SE_A, N_A, est_A - (CI_Width * SE_A), est_A + (CI_Width * SE_A))
+  names(A_out) <- output_names_samples
+  B_out <- c(est_B, VAR_B, SD_B, SE_B, N_B, est_B - (CI_Width * SE_B), est_B + (CI_Width * SE_B))
+  names(B_out) <- output_names_samples
 
-## Percent Effect Sizes
-effect_size_pct   <- 100 * ((max(est_A, est_B) - min(est_A, est_B)) / min(est_A, est_B))
-effect_pct_CI_up  <- 100 * (effect_CI_up / min(est_A, est_B))
-effect_pct_CI_low <- 100 * (effect_CI_low / min(est_A, est_B))
+  ## Absolute Effect Sizes
+  effect_size     <- est_A - est_B
+  sgn_effect_size <- sign(effect_size)
+  abs_effect_size <- abs(effect_size)
 
-output_names_effect_pct <-c('percent', paste0('Low', CI * 100, 'CI'), paste0('Up', CI * 100, 'CI'))
-effect_pct_out <- c(effect_size_pct, effect_pct_CI_low, effect_pct_CI_up)
-names(effect_pct_out) <- output_names_effect_pct
+  effect_CI_up  <- effect_size + CI_Width * pooled_SE
+  effect_CI_low <- effect_size - CI_Width * pooled_SE
 
-## F-ratio Test for Variances
-F_stat <- VAR_A / VAR_B
-F_df_A <- N_A - 1
-F_df_B <- N_B - 1
-F_p_value  <- 2 * min (pf(F_stat, F_df_A, F_df_B), 1 - pf(F_stat, F_df_A, F_df_B)) # according to http://www.stat.umn.edu/geyer/old03/5102/examp/rp.html, p-value for the 2-tailed test is twice which ever is smaller of the left or right tail tests.
-F_test_out <- c('F' = F_stat, 'df_A' = F_df_A, 'df_B' = F_df_B, 'p' = F_p_value)
+  output_names_effect <-c('absolute', 'A-B', paste0('Low', CI * 100, 'CI'), paste0('Up', CI * 100, 'CI'))
+  effect_out <- c(abs_effect_size, effect_size, effect_CI_low, effect_CI_up)
+  names(effect_out) <- output_names_effect
 
-## Z-test
-test_stat <- (est_A - est_B) / pooled_SE #t- and z-tests share the same test statistic
+  ## Percent Effect Sizes
+  effect_size_pct   <- 100 * ((max(est_A, est_B) - min(est_A, est_B)) / min(est_A, est_B))
+  effect_pct_CI_up  <- 100 * (effect_CI_up / min(est_A, est_B))
+  effect_pct_CI_low <- 100 * (effect_CI_low / min(est_A, est_B))
 
-Z_p_value <- 2 * pnorm(test_stat, 0, 1, lower.tail = FALSE) #function defaults to one-tailed test, multiplying by 2 makes it a two-tailed test.
-Z_test_out <- c('Z' = test_stat, 'p' = Z_p_value)
+  output_names_effect_pct <-c('percent', paste0('Low', CI * 100, 'CI'), paste0('Up', CI * 100, 'CI'))
+  effect_pct_out <- c(effect_size_pct, effect_pct_CI_low, effect_pct_CI_up)
+  names(effect_pct_out) <- output_names_effect_pct
 
-## t-test
-t_df <- N_A + N_B - 2 #degrees of freedom for the t-statistic
-t_p_value <- 2 * pt(abs(test_stat), t_df, lower.tail = FALSE) #function defaults to one-tailed test, multiplying by 2 makes it a two-tailed test.
-t_test_out <- c('t' = test_stat, 'df' = t_df, 'p' = t_p_value)
+  ## F-ratio Test for Variances
+  F_stat <- VAR_A / VAR_B
+  F_df_A <- N_A - 1
+  F_df_B <- N_B - 1
+  F_p_value  <- 2 * min (pf(F_stat, F_df_A, F_df_B), 1 - pf(F_stat, F_df_A, F_df_B)) # according to http://www.stat.umn.edu/geyer/old03/5102/examp/rp.html, p-value for the 2-tailed test is twice which ever is smaller of the left or right tail tests.
+  F_test_out <- c('F' = F_stat, 'df_A' = F_df_A, 'df_B' = F_df_B, 'p' = F_p_value)
 
-output <- list('Estimate_A' = A_out, 'Estimate_B' = B_out, 'Effect_Size_Absolute' = effect_out, 'Effect_Size_Percent' = effect_pct_out, 'F_Ratio_Test_For_Equal_Variances' = F_test_out, 'Z_Test' = Z_test_out, 't_Test' = t_test_out)
-options(digits = pre_digits)
+  ## Z-test
+  test_stat <- (est_A - est_B) / pooled_SE #t- and z-tests share the same test statistic
 
-return(output)
+  Z_p_value <- 2 * pnorm(test_stat, 0, 1, lower.tail = FALSE) #function defaults to one-tailed test, multiplying by 2 makes it a two-tailed test.
+  Z_test_out <- c('Z' = test_stat, 'p' = Z_p_value)
+
+  ## t-test
+  t_df <- N_A + N_B - 2 #degrees of freedom for the t-statistic
+  t_p_value <- 2 * pt(abs(test_stat), t_df, lower.tail = FALSE) #function defaults to one-tailed test, multiplying by 2 makes it a two-tailed test.
+  t_test_out <- c('t' = test_stat, 'df' = t_df, 'p' = t_p_value)
+
+  output <- list('Estimate_A' = A_out, 'Estimate_B' = B_out, 'Effect_Size_Absolute' = effect_out, 'Effect_Size_Percent' = effect_pct_out, 'F_Ratio_Test_For_Equal_Variances' = F_test_out, 'Z_Test' = Z_test_out, 't_Test' = t_test_out)
+  options(digits = pre_digits)
+
+  return(output)
+    }else{
+      return (NA)
+}
 }

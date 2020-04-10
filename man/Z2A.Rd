@@ -4,7 +4,7 @@
 \alias{Z2A}
 \title{Convert instantaneous mortality (Z) to the annual mortality (A) rate.}
 \usage{
-Z2A(Z, SE_Z = NA, CI = 0.95)
+Z2A(Z, SE_Z = as.numeric(NA), CI = 0.95)
 }
 \arguments{
 \item{Z}{Vector of length = 1 of an instantaneous mortality rate. This can be entered as a positive or negative number.}

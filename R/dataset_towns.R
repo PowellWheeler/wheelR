@@ -1,0 +1,28 @@
+#' @title Postal ZIPcodes and coordinates of towns in the United States.
+#'
+#' @description This is built from the zipcode data.frame in the zipcode package. The GPS coordinates for multiple ZIPcodes in the same town were averaged to create one GPS coordinate for each town.
+#'
+#' @name towns
+#'
+#' @docType data
+#'
+#' @usage data(towns)
+#'
+#' @format A data frame with 30418 towns and the following 5 variables.
+#'  \describe{
+#'    \item{first}{a character vector of the city (town) name}
+#'    \item{second}{a character vector of state postal abreviation}
+#'    \item{third}{a character vector of the city and state}
+#'    \item{fourth}{a numeric vector of latitude}
+#'    \item{fifth}{a numeric vector of longitude}
+#'  }
+#'
+#' @source zipcode package on from CRAN.
+#'
+#' @keywords datasets
+#'
+#' @examples
+#' str(towns)
+#' head(towns)
+#'
+"towns"

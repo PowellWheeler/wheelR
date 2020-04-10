@@ -4,7 +4,7 @@
 \alias{today}
 \title{Find what day is today.}
 \usage{
-today()
+today(...)
 }
 \value{
 The date in R date format.

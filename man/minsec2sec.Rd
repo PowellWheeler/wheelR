@@ -17,6 +17,7 @@ Converts a time measurement in MM:SS format to seconds.
 }
 \note{
 This function is not vectorized. Please use sapply() to call it on multiple values.  sapply() will return a named vector, if you prefer an un-named vector use unname() in the call. See examples.
+  Don't do anything crazy because I haven't completely armored the function against stupidity.  For example the following will break the function: ":30", "30:", "AB:CD"
 }
 \examples{
 
@@ -26,7 +27,7 @@ testData <- c("01:30", "1:30", "100:00")
 
 sapply(testData, min.sec2sec) #Returns a named vector
 
-unname(testData, min.sec2sec)) #Returns an unnamed vector
+sapply(unname(testData, min.sec2sec)) #Returns an unnamed vector
 
 }
 \seealso{
